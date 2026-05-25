@@ -57,9 +57,7 @@ Objectifs :
 
 Méthode des moindres carrés ordinaires :
 
-$
-\hat{\beta}
-=
+$\hat{\beta}=
 (X^TX)^{-1}X^Ty
 $
 
