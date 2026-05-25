@@ -63,9 +63,7 @@ $
 
 Prédiction :
 
-$
-\hat{y} = X\hat{\beta}
-$
+$\hat{y} = X\hat{\beta}$
 
 ---
 
@@ -78,9 +76,8 @@ Méthode ensembliste basée sur plusieurs arbres de décision.
 
 Prédiction moyenne :
 
-$
-\hat{y}(x)
-=
+
+$\hat{y}(x)=
 \frac{1}{B}
 \sum_{b=1}^{B}
 T_b(x)
@@ -93,8 +90,7 @@ $
 Méthode de gradient boosting additive :
 
 $
-\hat{y}_i^{(t)}
-=
+\hat{y}_i^{(t)}=
 \hat{y}_i^{(t-1)}
 +
 f_t(x_i)
@@ -103,8 +99,7 @@ $
 Fonction objectif :
 
 $
-\mathcal{L}^{(t)}
-=
+\mathcal{L}^{(t)}=
 \sum_{i=1}^{n}
 l(y_i,\hat{y}_i^{(t)})
 +
@@ -118,8 +113,7 @@ $
 ### Coefficient de détermination
 
 $
-R^2
-=
+R^2=
 1 -
 \frac{\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}
 {\sum_{i=1}^{n}(y_i-\bar{y})^2}
@@ -130,8 +124,7 @@ $
 ### Erreur absolue moyenne
 
 $
-MAE
-=
+MAE=
 \frac{1}{n}
 \sum_{i=1}^{n}
 |y_i-\hat{y}_i|
@@ -142,8 +135,7 @@ $
 ### Racine de l’erreur quadratique moyenne
 
 $
-RMSE
-=
+RMSE=
 \sqrt{
 \frac{1}{n}
 \sum_{i=1}^{n}
@@ -158,8 +150,7 @@ $
 Valeur SHAP :
 
 $
-\phi_i(f,x)
-=
+\phi_i(f,x)=
 \sum_{S \subseteq F \setminus \{i\}}
 \frac{|S|!(|F|-|S|-1)!}{|F|!}
 \Big(
@@ -170,8 +161,7 @@ $
 Additivité :
 
 $
-f(x)
-=
+f(x)=
 \phi_0 + \sum_{i=1}^{p}\phi_i
 $
 
@@ -182,8 +172,7 @@ $
 Indice SDRloc :
 
 $
-\text{SDRloc}(i)
-=
+\text{SDRloc}(i)=
 1 -
 \frac{
 |\hat{y}_{RF}(i)-\hat{y}_{XGB}(i)|
