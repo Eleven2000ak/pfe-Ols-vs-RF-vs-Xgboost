@@ -95,13 +95,9 @@ $\hat{y}_i^{(t)}=\hat{y}_i^{(t-1)}+f_t(x_i)$
 
 Fonction objectif :
 
-$
-\mathcal{L}^{(t)}=
+$\mathcal{L}^{(t)}=
 \sum_{i=1}^{n}
-l(y_i,\hat{y}_i^{(t)})
-+
-\Omega(f_t)
-$
+(y_i,\hat{y}_i^{(t)})+\Omega(f_t)$
 
 ---
 
@@ -109,19 +105,13 @@ $
 
 ### Coefficient de détermination
 
-$
-R^2=
-1 -
-\frac{\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}
-{\sum_{i=1}^{n}(y_i-\bar{y})^2}
-$
+$R^2=1 -\frac{\sum_{i=1}^{n}(y_i-\hat{y_i)^2}{\sum_{i=1}^{n(y_i-\bar{y})^2}$
 
 ---
 
 ### Erreur absolue moyenne
 
-$
-MAE=
+$MAE=
 \frac{1}{n}
 \sum_{i=1}^{n}
 |y_i-\hat{y}_i|
