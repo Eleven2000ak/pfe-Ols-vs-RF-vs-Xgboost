@@ -1,2 +1,2 @@
 # app/app.py
-# in the futur inchaallah
+# in the future inchaallah
