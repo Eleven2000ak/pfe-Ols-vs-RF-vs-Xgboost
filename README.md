@@ -1,4 +1,4 @@
-# pfe-Ols-vs-RF-vs-Xgboost
+
 # Comparaison entre les méthodes statistiques classiques et les méthodes de Machine Learning pour la modélisation prédictive
 
 ## Régression linéaire (OLS) vs Random Forest vs XGBoost
