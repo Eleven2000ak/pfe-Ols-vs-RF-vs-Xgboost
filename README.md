@@ -89,10 +89,9 @@ $
 
 Méthode de gradient boosting additive :
 
-$
-\hat{y}_i^{(t)}=
-\hat{y}_i^{(t-1)}+f_t(x_i)
-$
+
+$\hat{y}_i^{(t)}=\hat{y}_i^{(t-1)}+f_t(x_i)$
+
 
 Fonction objectif :
 
