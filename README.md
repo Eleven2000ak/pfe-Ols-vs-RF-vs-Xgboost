@@ -159,15 +159,7 @@ $
 Indice SDRloc :
 
 
-$\text{SDRloc}(i)=
-1 -
-\frac{
-|\hat{y}_{RF}(i)-\hat{y}_{XGB}(i)|
-}{
-\max_j
-|\hat{y}_{RF}(j)-\hat{y}_{XGB}(j)|
-}
-$
+$\text{SDRloc}(i)=1 -\frac{|\hat{y}_{RF}(i)-\hat{y}_{XGB}(i)|}{\max_j|\hat{y}_{RF}(j)-\hat{y}_{XGB}(j)|}$
 
 Interprétation :
 
@@ -178,12 +170,11 @@ Interprétation :
 
 ## 📈 Résultats principaux
 
-| Modèle | $R^2$ | MAE | Temps |
-|---|---|---|---|
-| OLS | 0.58 | 0.53 | < 0.1 s |
-| Random Forest | 0.81 | 0.33 | 2.3 s |
-| XGBoost | 0.83 | 0.31 | 1.8 s |
-
+| Modèle            | RMSE       | MAE        | \(R^2\) |
+|-------------------|------------|------------|---------|
+| Régression Linéaire | 67664.88   | 48626.98   | 0.6506  |
+| Random Forest      | 53145.28   | 35268.54   | 0.7845  |
+| XGBoost            | 47085.48   | 30845.82   | 0.8308  |
 ---
 
 ## 📌 Analyse des résultats
