@@ -105,7 +105,13 @@ $\mathcal{L}^{(t)}=
 
 ### Coefficient de détermination
 
-$R^2=1 -\frac{\sum_{i=1}^{n}(y_i-\hat{y_i)^2}{\sum_{i=1}^{n(y_i-\bar{y})^2}$
+
+$R^2=
+1 -
+\frac{\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}
+{\sum_{i=1}^{n}(y_i-\bar{y})^2}
+$
+
 
 ---
 
@@ -136,8 +142,8 @@ $
 
 Valeur SHAP :
 
-$
-\phi_i(f,x)=
+
+$\phi_i(f,x)=
 \sum_{S \subseteq F \setminus \{i\}}
 \frac{|S|!(|F|-|S|-1)!}{|F|!}
 \Big(
@@ -147,8 +153,8 @@ $
 
 Additivité :
 
-$
-f(x)=
+
+$f(x)=
 \phi_0 + \sum_{i=1}^{p}\phi_i
 $
 
@@ -158,8 +164,8 @@ $
 
 Indice SDRloc :
 
-$
-\text{SDRloc}(i)=
+
+$\text{SDRloc}(i)=
 1 -
 \frac{
 |\hat{y}_{RF}(i)-\hat{y}_{XGB}(i)|
