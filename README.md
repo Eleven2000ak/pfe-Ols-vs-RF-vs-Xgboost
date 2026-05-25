@@ -1,4 +1,3 @@
-
 # Comparaison entre les méthodes statistiques classiques et les méthodes de Machine Learning pour la modélisation prédictive
 
 ## Régression linéaire (OLS) vs Random Forest vs XGBoost
@@ -13,70 +12,246 @@
 
 ## 📌 Contexte et objectif
 
-Ce projet de fin d’études compare les performances et l’interprétabilité de trois modèles de régression :
+Ce projet compare trois approches de régression :
 
-- **Régression linéaire (OLS)** – méthode statistique classique
-- **Random Forest** – méthode ensembliste non linéaire
-- **XGBoost** – méthode de gradient boosting optimisée
+- Régression linéaire (OLS)
+- Random Forest
+- XGBoost
 
-L’application porte sur la prédiction des prix médians des logements en Californie (jeu de données *California Housing*). L’objectif est d’évaluer dans quels cas les modèles complexes surpassent l’approche linéaire, et comment interpréter leurs prédictions malgré leur complexité.
+L’étude est réalisée sur le dataset *California Housing* afin de prédire le prix médian des logements.
+
+Objectifs :
+
+- comparer les performances prédictives
+- analyser l’interprétabilité des modèles
+- étudier la robustesse aux outliers
+- évaluer la stabilité locale des prédictions
 
 ---
 
 ## 🧪 Hypothèses de recherche
 
-| Hypothèse | Énoncé | Résultat obtenu |
-|-----------|--------|----------------|
-| **H1** | Le processus génératif des données est linéaire (ou au moins bien approximé par OLS). | **Rejetée** – OLS est significativement moins performant que RF/XGBoost. |
-| **H2** | Sur des données réelles, les modèles non linéaires (RF, XGB) apportent un gain par rapport à OLS. | **Validée** – Les performances (R², MAE) sont nettement améliorées. |
-| **H3** | RF et XGBoost sont robustes à la présence d’outliers. | **Validée** – Dégradation limitée après introduction de 5% d’outliers. |
-| **H4** | L’importance des variables donnée par SHAP (XGBoost) est fortement corrélée avec les coefficients absolus de la régression linéaire. | **Validée** – Corrélation de Spearman ρ = 0.836, p‑value = 0.0013. |
+| Hypothèse | Description | Résultat |
+|---|---|---|
+| $H1$ | Le processus génératif est linéaire. | Rejetée |
+| $H2$ | Les modèles non linéaires améliorent les performances. | Validée |
+| $H3$ | RF et XGBoost sont robustes aux outliers. | Validée |
+| $H4$ | SHAP est fortement corrélé aux coefficients OLS. | Validée |
 
 ---
 
 ## 📊 Démarche méthodologique
 
-### 1. Prétraitement et exploration
-- Chargement du jeu de données *California Housing*
-- Analyse des distributions, corrélations
-- Normalisation des variables (pour OLS)
+### 1. Prétraitement
 
-### 2. Entraînement et évaluation
-- **OLS** : régression linéaire classique (moindres carrés ordinaires)
-- **Random Forest** : 100 arbres, critère MSE
-- **XGBoost** : paramètres optimisés via grid search
-
-**Métriques** : R², MAE, RMSE, temps d’entraînement.
-
-### 3. Interprétabilité – Valeurs SHAP
-- Calcul des valeurs SHAP avec `TreeExplainer` pour RF et XGB
-- Importance globale : moyenne des |SHAP| par variable
-- Graphiques *summary plot*, *bar plot*, *dependence plot*
-
-### 4. Cartes de confiance locale (LDCM)
-- Principe : utilisation du désaccord entre RF et XGB pour estimer la fiabilité spatiale
-- Indice **SDRloc** (Spatial Disagreement Reliability) :
-  \[
-  \text{SDRloc}(i) = 1 - \frac{| \hat{y}_{RF}(i) - \hat{y}_{XGB}(i) |}{\max_j | \hat{y}_{RF}(j) - \hat{y}_{XGB}(j) |}
-  \]
-- Visualisation géographique des zones de confiance (vert = confiance élevée, rouge = faible)
-
-### 5. Grille décisionnelle
-- Fonction `recommander_modele_avance(n_samples, linearite, besoin_interpretabilite, tolerance_risque)`
-- Logique conditionnelle pour choisir entre OLS, RF ou XGBoost selon le contexte métier
+- chargement des données
+- analyse exploratoire
+- gestion des valeurs manquantes
+- normalisation des variables
 
 ---
 
-## 📈 Principaux résultats
+### 2. Entraînement des modèles
 
-| Modèle | R² (test) | MAE (test) | Temps d’entraînement |
-|--------|-----------|------------|----------------------|
-| OLS    | 0.58      | 0.53       | < 0.1 s              |
+#### Régression linéaire (OLS)
+
+Méthode des moindres carrés ordinaires :
+
+$
+\hat{\beta}
+=
+(X^TX)^{-1}X^Ty
+$
+
+Prédiction :
+
+$
+\hat{y} = X\hat{\beta}
+$
+
+---
+
+#### Random Forest
+
+Méthode ensembliste basée sur plusieurs arbres de décision.
+
+- $100$ arbres
+- réduction de variance par agrégation
+
+Prédiction moyenne :
+
+$
+\hat{y}(x)
+=
+\frac{1}{B}
+\sum_{b=1}^{B}
+T_b(x)
+$
+
+---
+
+#### XGBoost
+
+Méthode de gradient boosting additive :
+
+$
+\hat{y}_i^{(t)}
+=
+\hat{y}_i^{(t-1)}
++
+f_t(x_i)
+$
+
+Fonction objectif :
+
+$
+\mathcal{L}^{(t)}
+=
+\sum_{i=1}^{n}
+l(y_i,\hat{y}_i^{(t)})
++
+\Omega(f_t)
+$
+
+---
+
+## 📈 Métriques d’évaluation
+
+### Coefficient de détermination
+
+$
+R^2
+=
+1 -
+\frac{\sum_{i=1}^{n}(y_i-\hat{y}_i)^2}
+{\sum_{i=1}^{n}(y_i-\bar{y})^2}
+$
+
+---
+
+### Erreur absolue moyenne
+
+$
+MAE
+=
+\frac{1}{n}
+\sum_{i=1}^{n}
+|y_i-\hat{y}_i|
+$
+
+---
+
+### Racine de l’erreur quadratique moyenne
+
+$
+RMSE
+=
+\sqrt{
+\frac{1}{n}
+\sum_{i=1}^{n}
+(y_i-\hat{y}_i)^2
+}
+$
+
+---
+
+## 🧠 Interprétabilité – Valeurs SHAP
+
+Valeur SHAP :
+
+$
+\phi_i(f,x)
+=
+\sum_{S \subseteq F \setminus \{i\}}
+\frac{|S|!(|F|-|S|-1)!}{|F|!}
+\Big(
+f(S \cup \{i\}) - f(S)
+\Big)
+$
+
+Additivité :
+
+$
+f(x)
+=
+\phi_0 + \sum_{i=1}^{p}\phi_i
+$
+
+---
+
+## 🗺️ Local Decision Confidence Maps (LDCM)
+
+Indice SDRloc :
+
+$
+\text{SDRloc}(i)
+=
+1 -
+\frac{
+|\hat{y}_{RF}(i)-\hat{y}_{XGB}(i)|
+}{
+\max_j
+|\hat{y}_{RF}(j)-\hat{y}_{XGB}(j)|
+}
+$
+
+Interprétation :
+
+- valeur proche de $1$ → forte confiance
+- valeur proche de $0$ → faible confiance
+
+---
+
+## 📈 Résultats principaux
+
+| Modèle | $R^2$ | MAE | Temps |
+|---|---|---|---|
+| OLS | 0.58 | 0.53 | < 0.1 s |
 | Random Forest | 0.81 | 0.33 | 2.3 s |
-| XGBoost        | 0.83 | 0.31 | 1.8 s |
-
-**Conclusion** : XGBoost offre le meilleur compromis performance / temps. Random Forest est plus robuste aux réglages par défaut. OLS reste utile si l’interprétabilité est critique.
+| XGBoost | 0.83 | 0.31 | 1.8 s |
 
 ---
 
-## 🗂️ Structure du dépôt
+## 📌 Analyse des résultats
+
+- XGBoost offre les meilleures performances globales.
+- Random Forest est plus stable et robuste.
+- OLS reste pertinent lorsque l’interprétabilité est prioritaire.
+
+---
+
+## 🧠 Grille décisionnelle
+
+Fonction utilisée :
+
+```python
+def recommander_modele_avance(
+    n_samples,
+    linearite,
+    besoin_interpretabilite,
+    tolerance_risque='medium'
+):
+    if besoin_interpretabilite == 'élevé':
+        return "Régression linéaire"
+
+    elif linearite == 'faible' and n_samples > 5000:
+        return "XGBoost" if tolerance_risque == 'high' else "Random Forest"
+
+    else:
+        return "Comparer OLS et RF"
+```
+
+---
+
+## ✅ Conclusion générale
+
+Cette étude montre que :
+
+- les modèles non linéaires surpassent OLS sur données réelles
+- SHAP améliore fortement l’interprétabilité
+- les LDCM permettent une analyse spatiale de la confiance
+- le choix du modèle dépend du compromis :
+  - performance
+  - robustesse
+  - interprétabilité
+  - coût calculatoire
